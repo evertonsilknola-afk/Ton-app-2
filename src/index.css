@@ -1,65 +1,68 @@
 @tailwind base; @tailwind components; @tailwind utilities;
 
-:root{--p:#c0474f;--p2:#a63a43;--t1:#3a0e15;--t2:#7a4a52;--ok:#3f9d72;--bad:#b8323b}
-.dark{--t1:#fbeeee;--t2:#d9b4b9}
+:root{--p:#e0554a;--p2:#ffb59a;--t1:#ffffff;--t2:rgba(255,255,255,.76);--ok:#6fe0a8;--bad:#ff6f6f}
+.dark{--t1:#fff4ee;--t2:rgba(255,235,225,.7)}
 html,body,#root{height:100%}
-body{margin:0;font-family:'Segoe UI',system-ui,-apple-system,Roboto,sans-serif;color:var(--t1);background:#d9777f;overscroll-behavior:none}
+body{margin:0;font-family:'Segoe UI',system-ui,-apple-system,Roboto,sans-serif;color:var(--t1);background:#2a1450;overscroll-behavior:none}
 
-/* Fundo colorido: é ele que aparece desfocado atrás do vidro */
+/* Cenário: pôr do sol roxo → rosa → laranja, com lago refletindo */
 .bg-scene{position:fixed;inset:0;z-index:-1;overflow:hidden;
- background:linear-gradient(160deg,#f3b3b8 0%,#d9636d 45%,#a63a4a 100%)}
-.bg-scene::before,.bg-scene::after{content:"";position:absolute;border-radius:50%;filter:blur(40px)}
-.bg-scene::before{width:70vmax;height:70vmax;left:-20vmax;top:-15vmax;
- background:radial-gradient(circle,#ffd6da 0,rgba(255,214,218,0) 65%);animation:drift1 26s ease-in-out infinite alternate}
-.bg-scene::after{width:80vmax;height:80vmax;right:-30vmax;bottom:-25vmax;
- background:radial-gradient(circle,#7a1c2c 0,rgba(122,28,44,0) 65%);animation:drift2 32s ease-in-out infinite alternate}
-@keyframes drift1{to{transform:translate(14vmax,10vmax)}}
-@keyframes drift2{to{transform:translate(-12vmax,-8vmax)}}
-@media (prefers-reduced-motion:reduce){.bg-scene::before,.bg-scene::after{animation:none}}
-.dark .bg-scene{filter:brightness(.4) saturate(.95)}
+ background:
+  linear-gradient(180deg,#1a1448 0%,#3c2078 18%,#7a3a9a 34%,#d0507c 47%,#f28a45 56%,#ffb066 58%,
+  #e8704f 62%,#b9477a 74%,#6e2f86 88%,#2f1a5c 100%)}
+.bg-scene::before{content:"";position:absolute;left:50%;top:-8vmax;width:46vmax;height:46vmax;transform:translateX(-30%);border-radius:50%;
+ background:radial-gradient(circle at 40% 40%,rgba(255,200,230,.55) 0,rgba(210,120,255,.28) 35%,rgba(120,60,200,0) 68%);
+ animation:glow 14s ease-in-out infinite alternate}
+.bg-scene::after{content:"";position:absolute;inset:0;
+ background:repeating-linear-gradient(0deg,rgba(255,220,180,.16) 0 2px,transparent 2px 11px);
+ -webkit-mask-image:linear-gradient(180deg,transparent 58%,#000 76%);mask-image:linear-gradient(180deg,transparent 58%,#000 76%)}
+@keyframes glow{to{transform:translateX(-22%) scale(1.08);opacity:.85}}
+@media (prefers-reduced-motion:reduce){.bg-scene::before{animation:none}}
+.dark .bg-scene{filter:brightness(.55) saturate(1.05)}
 
-/* Vidro fosco */
+/* Vidro fosco quente */
 .glass{
- background:linear-gradient(135deg,rgba(255,255,255,.42),rgba(255,255,255,.18));
- backdrop-filter:blur(26px) saturate(170%);-webkit-backdrop-filter:blur(26px) saturate(170%);
- border:1px solid rgba(255,255,255,.55);
- box-shadow:0 10px 32px rgba(70,10,25,.25),inset 0 1px 0 rgba(255,255,255,.7),inset 0 -1px 0 rgba(255,255,255,.12);
- border-radius:20px}
-.dark .glass{
- background:linear-gradient(135deg,rgba(255,255,255,.12),rgba(255,255,255,.04));
- border-color:rgba(255,255,255,.16);
- box-shadow:0 10px 32px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.18)}
-.glass-in{background:rgba(255,255,255,.28);border:1px solid rgba(255,255,255,.4);border-radius:14px;
- backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
-.dark .glass-in{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.1)}
+ background:linear-gradient(135deg,rgba(255,255,255,.24),rgba(255,150,110,.10) 60%,rgba(190,110,230,.12));
+ backdrop-filter:blur(24px) saturate(165%);-webkit-backdrop-filter:blur(24px) saturate(165%);
+ border:1px solid rgba(255,255,255,.30);
+ box-shadow:0 14px 38px rgba(25,6,45,.38),inset 0 1px 0 rgba(255,255,255,.5),inset 0 -1px 0 rgba(255,255,255,.08);
+ border-radius:22px}
+.dark .glass{background:linear-gradient(135deg,rgba(255,255,255,.10),rgba(120,40,80,.22));border-color:rgba(255,255,255,.16)}
+.glass-in{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);border-radius:16px;
+ backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:inset 0 1px 0 rgba(255,255,255,.28)}
+.dark .glass-in{background:rgba(255,255,255,.07)}
 
-/* Modais e menus: vidro mais denso para o texto ficar legível */
-.modal{background:linear-gradient(135deg,rgba(255,255,255,.62),rgba(255,255,255,.38))!important;
- backdrop-filter:blur(34px) saturate(180%);-webkit-backdrop-filter:blur(34px) saturate(180%)}
-.dark .modal{background:linear-gradient(135deg,rgba(40,12,18,.78),rgba(25,8,12,.62))!important}
-.modal-bg{position:fixed;inset:0;z-index:100;background:rgba(60,8,20,.35);
+/* Modais: vidro mais denso para leitura */
+.modal-bg{position:fixed;inset:0;z-index:100;background:rgba(20,6,40,.45);
  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:12px}
-.modal{max-height:92vh;overflow-y:auto;width:100%;max-width:720px;padding:20px}
+.modal{max-height:92vh;overflow-y:auto;width:100%;max-width:720px;padding:20px;
+ background:linear-gradient(135deg,rgba(78,32,86,.72),rgba(120,45,70,.58))!important;
+ backdrop-filter:blur(34px) saturate(170%);-webkit-backdrop-filter:blur(34px) saturate(170%)}
 
 .t1{color:var(--t1)}.t2{color:var(--t2)}
 .lbl{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--t2)}
-.btn{background:linear-gradient(180deg,rgba(210,92,100,.95),rgba(176,56,66,.95));color:#fff;font-weight:700;font-size:12px;border-radius:999px;padding:8px 18px;
- border:1px solid rgba(255,255,255,.35);box-shadow:0 4px 12px rgba(110,20,35,.35),inset 0 1px 0 rgba(255,255,255,.4)}
+.btn{background:linear-gradient(180deg,#f2705a,#d4483f);color:#fff;font-weight:700;font-size:12px;border-radius:999px;padding:8px 18px;
+ border:1px solid rgba(255,255,255,.4);box-shadow:0 4px 14px rgba(120,25,40,.4),inset 0 1px 0 rgba(255,255,255,.45)}
 .btn:active{filter:brightness(.92)}
-.btn-o{border:1.5px solid rgba(192,71,79,.9);color:var(--p2);font-weight:700;font-size:12px;border-radius:999px;padding:6px 16px;background:rgba(255,255,255,.25);
- backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
-.btn-g{background:rgba(255,255,255,.28);border:1px solid rgba(255,255,255,.4);color:var(--t2);font-weight:700;font-size:12px;border-radius:999px;padding:8px 16px}
-.inp{width:100%;background:transparent;border-bottom:2px solid rgba(192,71,79,.55);padding:6px 2px;outline:none;color:var(--t1);font-size:14px}
-.inp:focus{border-color:var(--p)}
-select.inp option{color:#333}
-.bar{height:10px;border-radius:99px;background:rgba(255,255,255,.35);overflow:hidden;box-shadow:inset 0 1px 2px rgba(80,10,25,.2)}
-.bar>div{height:100%;background:linear-gradient(90deg,#d9636d,#b8323b);border-radius:99px;transition:width .6s}
+.btn-o{border:1.5px solid rgba(255,255,255,.55);color:#fff;font-weight:700;font-size:12px;border-radius:999px;padding:6px 16px;background:rgba(255,255,255,.14);
+ backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);box-shadow:inset 0 1px 0 rgba(255,255,255,.3)}
+.btn-g{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);color:var(--t2);font-weight:700;font-size:12px;border-radius:999px;padding:8px 16px}
+.inp{width:100%;background:transparent;border-bottom:2px solid rgba(255,255,255,.45);padding:6px 2px;outline:none;color:var(--t1);font-size:14px;color-scheme:dark}
+.inp:focus{border-color:#ffb59a}
+.inp::placeholder{color:rgba(255,255,255,.5)}
+select.inp option{color:#222;background:#fff}
+.bar{height:10px;border-radius:99px;background:rgba(255,255,255,.2);overflow:hidden;box-shadow:inset 0 1px 2px rgba(30,5,50,.35)}
+.bar>div{height:100%;background:linear-gradient(90deg,#ff9a5a,#e0554a);border-radius:99px;transition:width .6s}
 .hs::-webkit-scrollbar{display:none}.hs{scrollbar-width:none}
 .badge{font-size:10px;font-weight:800;color:#fff;border-radius:6px;padding:2px 7px}
 .safe{padding-top:env(safe-area-inset-top,0px)}
-.fieldset{border:1.5px solid rgba(192,71,79,.55);border-radius:14px;padding:8px 12px 10px;position:relative}
-.fieldset>.lg{position:absolute;top:-9px;left:10px;font-size:11px;padding:0 6px;color:var(--t2);background:rgba(255,255,255,.65);border-radius:6px;
- backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
-.dark .fieldset>.lg{background:rgba(40,12,18,.85)}
-@keyframes pulse2{0%,100%{box-shadow:0 0 0 0 rgba(192,71,79,.6)}50%{box-shadow:0 0 0 10px rgba(192,71,79,0)}}
+.fieldset{border:1.5px solid rgba(255,255,255,.4);border-radius:14px;padding:8px 12px 10px;position:relative}
+.fieldset>.lg{position:absolute;top:-9px;left:10px;font-size:11px;padding:0 6px;color:#fff;background:rgba(110,45,95,.9);border-radius:6px}
+
+/* gráficos (SVG) legíveis sobre o vidro escuro */
+svg text{fill:rgba(255,255,255,.8)!important}
+svg line{stroke:rgba(255,255,255,.22)!important}
+svg circle[stroke="rgba(120,80,85,.18)"]{stroke:rgba(255,255,255,.18)!important}
+
+@keyframes pulse2{0%,100%{box-shadow:0 0 0 0 rgba(255,140,100,.7)}50%{box-shadow:0 0 0 10px rgba(255,140,100,0)}}
 .pulse{animation:pulse2 1.6s infinite}
